@@ -1,0 +1,18 @@
+{
+  "name": "lan-devices",
+  "version": "0.0.0",
+  "description": "Simple util to scan devices connected to the local network (with Windows support)",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gillescochez/lan-devices.git"
+  },
+  "author": "Gilles Cochez",
+  "bugs": {
+    "url": "https://github.com/gillescochez/lan-devices/issues"
+  },
+  "homepage": "https://github.com/gillescochez/lan-devices#readme",
+  "dependencies": {
+    "ip": "^1.1.5"
+  }
+}
