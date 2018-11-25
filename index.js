@@ -3,6 +3,7 @@ const os = require('os');
 const net = require('net');
 const util = require('util');
 const exec = util.promisify(require('child_process').exec);
+const isWin32 = os.platform() === 'win32';
 
 const getAvailableIPs = () => {
 	const interfaces = os.networkInterfaces();
@@ -61,14 +62,13 @@ const parsers = {
 
 const parse = ({stdout}) => {
 
-	const isWindows = stdout.indexOf('\r\n') !== -1;
-	const RN = stdout.indexOf('\r\n') !== -1 ? '\r\n' : '\n';
+	const RN = isWin32 ? '\r\n' : '\n';
 	const rows = stdout.split(RN);
 
 	let output = [];
 	let parseFn = parsers.linux;
 
-	if (isWindows) {
+	if (isWin32) {
 		// 3 first entries are 2 headers and 1 empty string
 		rows.splice(0, 3);
 
@@ -85,8 +85,10 @@ const parse = ({stdout}) => {
 	return output;
 };
 
-const list = () => {
-	return exec('arp -a').then(parse)
+const list = (cmd) => {
+	return () => {
+		return exec(cmd).then(parse);
+	}
 };
 
 let pingPort = 80;
@@ -113,6 +115,6 @@ module.exports = {
 	},
 	scan: (port) => {
 		pingPort = port || 80;
-		return ping().then(list);
+		return ping().then(list('arp -a'));
 	}
 };
