@@ -30,7 +30,7 @@ const parsers = {
 		const [ipAddress, macAddress] = row.trim().split(/\s+/);
 		let hostname = '?';
 
-		return (!~ips.indexOf(ipAddress) || macAddress === '(incomplete)') ? null : {
+		return (!~ips.indexOf(ipAddress) ||  macAddress.indexOf('incomplete') !== -1) ? null : {
 			hostname,
 			ipAddress,
 			macAddress
@@ -45,7 +45,7 @@ const parsers = {
 
 		let macAddress = bits[3];
 
-		if (!~ips.indexOf(ipAddress) || macAddress === '(incomplete)') return;
+		if (!~ips.indexOf(ipAddress) || macAddress.indexOf('incomplete') !== -1) return;
 
 		macAddress = macAddress.replace(/^.:/, '0$&')
 		.replace(/:.(?=:|$)/g, ':0X$&')
