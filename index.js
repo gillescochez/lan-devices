@@ -34,7 +34,7 @@ const parsers = {
 		return (!~ips.indexOf(ipAddress) ||  macAddress.indexOf('incomplete') !== -1) ? null : {
 			hostname,
 			ipAddress,
-			macAddress
+			macAddress: macAddress.replace(/-/gi, ':')
 		};
 	},
 
