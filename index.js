@@ -63,7 +63,7 @@ const parsers = {
 const parse = ({stdout}) => {
 
 	const RN = isWin32 ? '\r\n' : '\n';
-	const rows = stdout.split(RN);
+	const rows = (stdout || '').split(RN);
 
 	let output = [];
 	let parseFn = parsers.linux;
@@ -87,7 +87,7 @@ const parse = ({stdout}) => {
 
 const list = (cmd) => {
 	return () => {
-		return exec(cmd).then(parse);
+		return exec(cmd).then(parse).catch(() => { return []; });
 	}
 };
 
@@ -116,5 +116,10 @@ module.exports = {
 	scan: (port) => {
 		pingPort = port || 80;
 		return ping().then(list('arp -a'));
+	},
+	scanPis: (port) => {
+		pingPort = port || 80;
+		// https://raspberrypi.stackexchange.com/questions/13936/find-raspberry-pi-address-on-local-network
+		return ping().then(list(isWin32 ? 'arp -a | findstr b8-27-eb' : 'arp -na | grep -i b8:27:eb'));
 	}
 };
