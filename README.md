@@ -2,7 +2,7 @@
 
 Simple util to scan devices connected to the local network (with Windows support)
 
-It parses the result of ```arp -a``` and returns the list as an array of object in the following format.
+It parses the result of ```arp``` calls and returns the list as an array of object in the following format.
 
 ```
 {
